@@ -26,8 +26,8 @@ namespace Edge_Detection
             for (int j = -1; j < 2; j++)
             {
               int pixVal = image.GetPixel(x + j, y + i).R;
-              gradX += pixVal * Matrix.sobelHorizontal[i + 1 , j + 1];
-              gradY += pixVal * Matrix.sobelVertical[i + 1, j + 1];
+              gradX += pixVal * Matrix.SobelHorizontal[i + 1 , j + 1];
+              gradY += pixVal * Matrix.SobelVertical[i + 1, j + 1];
             }
           }
 

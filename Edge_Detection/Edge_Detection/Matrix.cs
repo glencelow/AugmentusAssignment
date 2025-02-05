@@ -10,7 +10,7 @@
     /// <summary>
     /// horizontal matrix for sobel
     /// </summary>
-    public static double[,] sobelHorizontal
+    public static double[,] SobelHorizontal
     {
       get 
       {
@@ -24,7 +24,7 @@
     /// <summary>
     /// vertical matrix for sobel
     /// </summary>
-    public static double[,] sobelVertical
+    public static double[,] SobelVertical
     {
       get
       {
@@ -38,7 +38,7 @@
     /// <summary>
     /// horizontal matrix for prewitt
     /// </summary>
-    public static double[,] prewittHorizontal
+    public static double[,] PrewittHorizontal
     {
       get
       {
@@ -52,7 +52,7 @@
     /// <summary>
     /// vertical matrix for prewitt
     /// </summary>
-    public static double[,] prewittVertical
+    public static double[,] PrewittVertical
     {
       get
       {
