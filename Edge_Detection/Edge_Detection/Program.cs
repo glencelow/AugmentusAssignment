@@ -9,16 +9,21 @@ namespace Edge_Detection
     {
         static void Main(string[] args)
         {
-          string basePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-          string imagePath = Path.Combine(basePath, "Photo", "lena.png");
-          Bitmap image = new(imagePath);
-          Bitmap grayImage = ConvertToGrayScale(image);
+          //get input from user on which filter they want
+          int userInput = 0;
+          while(true)
+          {
+            Console.WriteLine("Enter 1 for sobel or 2 for prewitt: ");
+            var input = Console.ReadLine();
 
-          Console.Write("applying sobel filter\n");
-          Bitmap sobelImage = Sobel.ApplySobel(grayImage);
-          string newImagePath = Path.Combine(basePath, "Photo", "sobelImage.jpg");
-          sobelImage.Save(newImagePath, ImageFormat.Jpeg);
-          Console.Write("sobel applied\n");
+            //ensures user input correctly if not ask user again
+            if (int.TryParse(input, out userInput) && (userInput == 1 || userInput == 2))
+              break;
+
+            Console.WriteLine("Invalid input! Please enter 1 for sobel or 2 for prewitt ");
+          }
+
+          ApplyFilterToAll(userInput);
         }
 
         /// <summary>
@@ -37,6 +42,39 @@ namespace Edge_Detection
             }
           }
           return grayImage;
+        }
+
+        /// <summary>
+        /// A function grab all images in the input folder and apply the edge filter to all and save it to the output folder
+        /// </summary>
+        static void ApplyFilterToAll(int userInput)
+        {
+          string basePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+
+          string inputFolder = Path.Combine(basePath, "input");
+          string outputFolder = Path.Combine(basePath, "output");
+
+          //ensure an output folder exist 
+          Directory.CreateDirectory(outputFolder);
+          Console.Write("applying filter\n");
+
+          //get all images in input folder
+          string[] jpgImages = Directory.GetFiles(inputFolder, "*.jpg");
+          string[] pngImages = Directory.GetFiles(inputFolder, "*.png");
+          string[] allImages = jpgImages.Concat(pngImages).ToArray();
+
+          //apply filter to all images
+          foreach (string image in allImages)
+          {
+            Bitmap photo = new(image);
+            Bitmap grayImage = ConvertToGrayScale(photo);
+            Bitmap filterImage = EdgeDetectionFilter.ApplyFilter(grayImage, userInput);
+
+            string outPutImage = Path.Combine(outputFolder, Path.GetFileName(image));
+            filterImage.Save(outPutImage);
+          }
+
+          Console.Write("filter applied\n");
         }
     }
 }
