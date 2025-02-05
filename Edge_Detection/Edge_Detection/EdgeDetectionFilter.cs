@@ -12,7 +12,7 @@ namespace Edge_Detection
     {
       int width = image.Width;
       int height = image.Height;
-      Bitmap sobelImage = new(width, height);
+      Bitmap filterImage = new(width, height);
 
       for (int y = 1; y < height - 1; y++)
       {
@@ -41,11 +41,11 @@ namespace Edge_Detection
 
           // get the magnitude of the gradient 
           int mag = Math.Min(255, (int)Math.Sqrt(gradX * gradX + gradY * gradY));
-          sobelImage.SetPixel(x, y, Color.FromArgb(mag, mag, mag));
+          filterImage.SetPixel(x, y, Color.FromArgb(mag, mag, mag));
         }
       }
 
-      return sobelImage;
+      return filterImage;
     }
   }
 }
