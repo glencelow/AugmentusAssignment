@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 
 namespace Edge_Detection
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -16,14 +16,23 @@ namespace Edge_Detection
             Console.WriteLine("Enter 1 for sobel or 2 for prewitt: ");
             var input = Console.ReadLine();
 
-            //ensures user input correctly if not ask user again
-            if (int.TryParse(input, out userInput) && (userInput == 1 || userInput == 2))
+            try
+            {
+              userInput = GetUserInput(input);
               break;
-
-            Console.WriteLine("Invalid input! Please enter 1 for sobel or 2 for prewitt ");
+            }
+            catch (Exception ex)
+            {
+              Console.WriteLine(ex.Message);
+            }
           }
 
-          ApplyFilterToAll(userInput);
+          string basePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+
+          string inputFolder = Path.Combine(basePath, "input");
+          string outputFolder = Path.Combine(basePath, "output");
+
+          ApplyFilterToAll(userInput, inputFolder, outputFolder);
         }
 
         /// <summary>
@@ -47,34 +56,49 @@ namespace Edge_Detection
         /// <summary>
         /// A function grab all images in the input folder and apply the edge filter to all and save it to the output folder
         /// </summary>
-        static void ApplyFilterToAll(int userInput)
+        public static void ApplyFilterToAll(int userInput, string inputFolder, string outputFolder)
         {
-          string basePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-
-          string inputFolder = Path.Combine(basePath, "input");
-          string outputFolder = Path.Combine(basePath, "output");
-
           //ensure an output folder exist 
           Directory.CreateDirectory(outputFolder);
-          Console.Write("applying filter\n");
 
           //get all images in input folder
           string[] jpgImages = Directory.GetFiles(inputFolder, "*.jpg");
           string[] pngImages = Directory.GetFiles(inputFolder, "*.png");
           string[] allImages = jpgImages.Concat(pngImages).ToArray();
 
+          //check if input folder has any images that is  in the correct format
+          if(allImages.Length == 0)
+            throw new FileNotFoundException("Input folder is empty or doesnt contain images with the .png or .jpg format.\n");
+          
+          Console.Write("applying filter\n");
           //apply filter to all images
           foreach (string image in allImages)
           {
-            Bitmap photo = new(image);
-            Bitmap grayImage = ConvertToGrayScale(photo);
-            Bitmap filterImage = EdgeDetectionFilter.ApplyFilter(grayImage, userInput);
-
-            string outPutImage = Path.Combine(outputFolder, Path.GetFileName(image));
-            filterImage.Save(outPutImage);
+            try
+            { 
+                Bitmap photo = new(image);
+                Bitmap grayImage = ConvertToGrayScale(photo);
+                Bitmap filterImage = EdgeDetectionFilter.ApplyFilter(grayImage, userInput);
+    
+                string outPutImage = Path.Combine(outputFolder, Path.GetFileName(image));
+                filterImage.Save(outPutImage);    
+            }
+            catch(Exception ex)
+            {
+              Console.WriteLine($"Error with {image}: {ex.Message}\n");
+            }
           }
 
           Console.Write("filter applied\n");
+        }
+
+        public static int GetUserInput(string input)
+        {
+          //ensures user input correctly if not ask user again
+          if (int.TryParse(input, out int userInput) && (userInput == 1 || userInput == 2))
+              return userInput;
+
+          throw new ArgumentException("Invalid input! Please enter 1 for sobel or 2 for prewitt ");
         }
     }
 }
