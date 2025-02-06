@@ -7,23 +7,28 @@ namespace UnitTest
     /// <summary>
     /// Test to see an exception thrown when input folder is empty
     /// </summary>
-    [Fact]
-    public void ApplyFilterToAll_EmptyFolder_ThrowsException()
+    [Theory]
+    [InlineData("1")] //  sobel
+    [InlineData("2")] //  prewitt 
+    public void ApplyFilterToAll_EmptyFolder_ThrowsException(string userInput)
     {
       string basePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
 
       Directory.CreateDirectory(Path.Combine(basePath, "testemptyimage"));
       string inputFolder = Path.Combine(basePath, "testemptyimage");
       string outputFolder = Path.Combine(basePath, "output");
+      EdgeDetectionFilter filter = Program.GetUserInput(userInput);
 
-      Assert.Throws<FileNotFoundException>(() => Program.ApplyFilterToAll(1, inputFolder, outputFolder));
+      Assert.Throws<FileNotFoundException>(() => Program.ApplyFilterToAll(filter, inputFolder, outputFolder));
     }
 
     /// <summary>
     /// Test to see when the filter is applied
     /// </summary>
-    [Fact]
-    public void ApplyFilterToAll_Valid_FilterApplied()
+    [Theory]
+    [InlineData("1")] //  sobel
+    [InlineData("2")] //  prewitt 
+    public void ApplyFilterToAll_Valid_FilterApplied(string userInput)
     {
       string basePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
 
@@ -37,7 +42,8 @@ namespace UnitTest
         file.Delete();
       }
 
-      Program.ApplyFilterToAll(1, inputFolder, outputFolder);
+      EdgeDetectionFilter filter = Program.GetUserInput(userInput);
+      Program.ApplyFilterToAll(filter, inputFolder, outputFolder);
 
       string[] inputJPGImages = Directory.GetFiles(inputFolder, "*.jpg");
       string[] inputPNGImages = Directory.GetFiles(inputFolder, "*.png");

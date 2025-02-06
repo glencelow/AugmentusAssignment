@@ -6,13 +6,19 @@ namespace Edge_Detection
   /// <summary>
   /// An edge detection filter using either sobel or prewitt
   /// </summary>
-  public static class EdgeDetectionFilter
+  public abstract class EdgeDetectionFilter
   {
-    public static Bitmap ApplyFilter(Bitmap image, int userInput)
+    protected abstract double[,] getHorizontalMatrix();
+    protected abstract double[,] getVerticalMatrix();
+
+    public Bitmap ApplyFilter(Bitmap image)
     {
       int width = image.Width;
       int height = image.Height;
       Bitmap filterImage = new(width, height);
+
+      double[,] horizontalMatrix = getHorizontalMatrix();
+      double[,] verticalMatrix = getVerticalMatrix();
 
       for (int y = 1; y < height - 1; y++)
       {
@@ -26,16 +32,8 @@ namespace Edge_Detection
             for (int j = -1; j < 2; j++)
             {
               int pixVal = image.GetPixel(x + j, y + i).R;
-              if (userInput == 1)
-              { 
-                gradX += pixVal * Matrix.SobelHorizontal[i + 1 , j + 1];
-                gradY += pixVal * Matrix.SobelVertical[i + 1, j + 1];
-              }
-              else
-              {
-                gradX += pixVal * Matrix.PrewittHorizontal[i + 1, j + 1];
-                gradY += pixVal * Matrix.PrewittVertical[i + 1, j + 1];
-              }
+              gradX += pixVal * horizontalMatrix[i + 1 , j + 1];
+              gradY += pixVal * verticalMatrix[i + 1, j + 1];
             }
           }
 

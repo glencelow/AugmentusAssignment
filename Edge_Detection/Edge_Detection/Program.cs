@@ -10,7 +10,7 @@ namespace Edge_Detection
         static void Main(string[] args)
         {
           //get input from user on which filter they want
-          int userInput = 0;
+          EdgeDetectionFilter filter;
           while(true)
           {
             Console.WriteLine("Enter 1 for sobel or 2 for prewitt: ");
@@ -18,7 +18,7 @@ namespace Edge_Detection
 
             try
             {
-              userInput = GetUserInput(input);
+              filter = GetUserInput(input);
               break;
             }
             catch (Exception ex)
@@ -32,7 +32,7 @@ namespace Edge_Detection
           string inputFolder = Path.Combine(basePath, "input");
           string outputFolder = Path.Combine(basePath, "output");
 
-          ApplyFilterToAll(userInput, inputFolder, outputFolder);
+          ApplyFilterToAll(filter, inputFolder, outputFolder);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Edge_Detection
         /// <summary>
         /// A function grab all images in the input folder and apply the edge filter to all and save it to the output folder
         /// </summary>
-        public static void ApplyFilterToAll(int userInput, string inputFolder, string outputFolder)
+        public static void ApplyFilterToAll(EdgeDetectionFilter filter, string inputFolder, string outputFolder)
         {
           //ensure an output folder exist 
           Directory.CreateDirectory(outputFolder);
@@ -78,7 +78,7 @@ namespace Edge_Detection
             { 
                 Bitmap photo = new(image);
                 Bitmap grayImage = ConvertToGrayScale(photo);
-                Bitmap filterImage = EdgeDetectionFilter.ApplyFilter(grayImage, userInput);
+                Bitmap filterImage = filter.ApplyFilter(grayImage);
     
                 string outPutImage = Path.Combine(outputFolder, Path.GetFileName(image));
                 filterImage.Save(outPutImage);    
@@ -92,11 +92,18 @@ namespace Edge_Detection
           Console.Write("filter applied\n");
         }
 
-        public static int GetUserInput(string input)
+        public static EdgeDetectionFilter GetUserInput(string input)
         {
           //ensures user input correctly if not ask user again
           if (int.TryParse(input, out int userInput) && (userInput == 1 || userInput == 2))
-              return userInput;
+          {
+            return userInput switch
+            {
+              1 => new SobelFilter(),
+              2 => new PrewittFilter(),
+              _ => throw new ArgumentException("Invalid input! Please enter 1 for sobel or 2 for prewitt ")
+            };
+          }
 
           throw new ArgumentException("Invalid input! Please enter 1 for sobel or 2 for prewitt ");
         }

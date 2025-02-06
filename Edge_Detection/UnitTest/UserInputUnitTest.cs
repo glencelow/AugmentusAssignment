@@ -8,12 +8,12 @@ namespace UnitTest
     /// Test to see correct user input
     /// </summary>
     [Theory]
-    [InlineData("1", 1)] //  sobel
-    [InlineData("2", 2)] //  prewitt 
-    public void GetUserInput_Valid_ReturnExpectedValue(string input, int output)
+    [InlineData("1", "SobelFilter")]      //  sobel
+    [InlineData("2", "PrewittFilter")]   //  prewitt 
+    public void GetUserInput_Valid_ReturnExpectedValue(string input, string output)
     {
-      int result = Program.GetUserInput(input);
-      Assert.Equal(output, result); 
+      EdgeDetectionFilter result = Program.GetUserInput(input);
+      Assert.Equal(output, result.GetType().Name); 
     }
 
     /// <summary>
