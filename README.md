@@ -9,7 +9,7 @@ This project uses .NET 9.0 as the framework.
 If you encounter missing package errors, use "**Manage NuGet Packages**" under the Project tab to install the required dependencies.
 
 # Set-up
-The Edge-Detection solution contains an input folder, where you should place the images (`.png` and `.jpg`) to apply the edge detection filter. The processed images will be saved in the output folder.
+The Edge-Detection solution contains an input folder (`AugmentusAssignment\Edge_Detection\Edge_Detection\input`), where you should place the images (`.png` and `.jpg`) to apply the edge detection filter. The processed images will be saved in the output folder(`AugmentusAssignment\Edge_Detection\Edge_Detection\output`).
 
 # Launch
 To run the program
