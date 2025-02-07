@@ -1,5 +1,8 @@
 ﻿namespace Edge_Detection
 {
+  /// <summary>
+  /// A class that inherent from EdgeDetectionFilter to set the matrix it will use to sobel 
+  /// </summary>
   public class SobelFilter : EdgeDetectionFilter
   {
     /// <summary>

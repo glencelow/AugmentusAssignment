@@ -1,10 +1,13 @@
 ﻿
 namespace Edge_Detection
 {
+  /// <summary>
+  /// A class that inherent from EdgeDetectionFilter to set the matrix it will use to prewitt 
+  /// </summary>
   public class PrewittFilter : EdgeDetectionFilter
   {
     /// <summary>
-    /// horizontal matrix for prewitt
+    /// A class that inherent from EdgeDetectionFilter to set the matrix it will use to prewitt 
     /// </summary>
     static double[,] PrewittHorizontal
     {

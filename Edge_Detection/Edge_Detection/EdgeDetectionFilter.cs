@@ -4,7 +4,7 @@ using System.Drawing;
 namespace Edge_Detection
 {
   /// <summary>
-  /// An edge detection filter using either sobel or prewitt
+  /// An abstract class that takes in an image then apply edge detection filter using either sobel or prewitt
   /// </summary>
   public abstract class EdgeDetectionFilter
   {
