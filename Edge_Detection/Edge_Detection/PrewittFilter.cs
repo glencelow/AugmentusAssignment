@@ -30,7 +30,7 @@ namespace Edge_Detection
           { -1, -1, -1 }, };
       }
     }
-    protected override double[,] getHorizontalMatrix() => PrewittHorizontal;
-    protected override double[,] getVerticalMatrix() => PrewittVertical;
+    protected override double[,] GetHorizontalMatrix() => PrewittHorizontal;
+    protected override double[,] GetVerticalMatrix() => PrewittVertical;
   }
 }

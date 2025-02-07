@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 
 
 namespace Edge_Detection
@@ -8,8 +8,8 @@ namespace Edge_Detection
   /// </summary>
   public abstract class EdgeDetectionFilter
   {
-    protected abstract double[,] getHorizontalMatrix();
-    protected abstract double[,] getVerticalMatrix();
+    protected abstract double[,] GetHorizontalMatrix();
+    protected abstract double[,] GetVerticalMatrix();
 
     public Bitmap ApplyFilter(Bitmap image)
     {
@@ -17,8 +17,8 @@ namespace Edge_Detection
       int height = image.Height;
       Bitmap filterImage = new(width, height);
 
-      double[,] horizontalMatrix = getHorizontalMatrix();
-      double[,] verticalMatrix = getVerticalMatrix();
+      double[,] horizontalMatrix = GetHorizontalMatrix();
+      double[,] verticalMatrix = GetVerticalMatrix();
 
       for (int y = 1; y < height - 1; y++)
       {

@@ -30,7 +30,7 @@
       }
     }
 
-    protected override double[,] getHorizontalMatrix() => SobelHorizontal;
-    protected override double[,] getVerticalMatrix() => SobelVertical;
+    protected override double[,] GetHorizontalMatrix() => SobelHorizontal;
+    protected override double[,] GetVerticalMatrix() => SobelVertical;
   }
 }
